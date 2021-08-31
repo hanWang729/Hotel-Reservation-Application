@@ -73,7 +73,13 @@ public class AdminMenu {
                 RoomType roomType = RoomType.valueOf(addRoomScanner.nextLine());
 
                 List<IRoom> roomList = new ArrayList<>();
-                IRoom newRoom = new Room(roomNumber,roomPrice,roomType);
+                IRoom newRoom = null;
+                if(roomPrice == 0.0){
+                    newRoom = new FreeRoom(roomNumber,roomPrice,roomType);
+                }
+                else {
+                    newRoom = new Room(roomNumber,roomPrice,roomType);
+                }
                 roomList.add(newRoom);
                 AdminResource.addRoom(roomList);
                 keepRunning = false;

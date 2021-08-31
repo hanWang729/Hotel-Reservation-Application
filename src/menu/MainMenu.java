@@ -34,6 +34,7 @@ public class MainMenu {
                         break;
                     case 2:
                         System.out.println("See my reservation");
+                        customerReservationMenu();
                         break;
                     case 3:
                         System.out.println("Create an account");
@@ -57,6 +58,37 @@ public class MainMenu {
 
         }
     }
+
+    public void customerReservationMenu(){
+        boolean keepRunning = true;
+        String email = "";
+        while (keepRunning){
+            try {
+                Scanner customerReservationScanner = new Scanner(System.in);
+                System.out.println("Please enter your email");
+                email = customerReservationScanner.nextLine();
+                String emailRegex = "^(.+)@(.+).(.+)$";
+                Pattern pattern = Pattern.compile(emailRegex);
+                if (!pattern.matcher(email).matches()) {
+                    throw new IllegalArgumentException("Error, Invalid email");
+                } else {
+                    keepRunning = false;
+                }
+            }catch (Exception e){
+                System.out.println("Please enter a valid email");
+            }
+        }
+        Collection<Reservation> customerReservations = HotelResource.getCustomersReservations(email);
+        if(customerReservations.size() == 0){
+            System.out.println("You have no reservation now");
+        }
+        else{
+            for (Reservation reservation : customerReservations){
+                System.out.println(reservation);
+            }
+        }
+    }
+
 
     public void createAccountMenu () {
         boolean keepRunning = true;

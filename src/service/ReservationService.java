@@ -57,7 +57,10 @@ public class ReservationService {
             roomAvailable = true;
             for (Reservation reservation : reservations){
                 if(reservation.getRoom().equals(room)){
-                    if (reservation.getCheckInDate().compareTo(checkInDate) * reservation.getCheckOutDate().compareTo(checkOutDate) < 0){
+                    if (reservation.getCheckInDate().compareTo(checkInDate) <= 0 && reservation.getCheckOutDate().compareTo(checkInDate) > 0){
+                        roomAvailable = false;
+                    }
+                    if (reservation.getCheckInDate().compareTo(checkOutDate) < 0 && reservation.getCheckOutDate().compareTo(checkOutDate) >= 0){
                         roomAvailable = false;
                     }
                 }

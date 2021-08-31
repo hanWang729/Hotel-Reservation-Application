@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class FreeRoom extends Room{
 
     public FreeRoom(String roomNumber, Double price, RoomType enumeration) {
@@ -8,6 +10,11 @@ public class FreeRoom extends Room{
 
     @Override
     public String toString() {
-        return "FreeRoom{}";
+        return "Room{" +
+                "roomNumber=" + super.getRoomNumber() + '\'' +
+                ", price=Free" +
+                ", enumeration=" + super.getRoomType() +
+                '}';
     }
+
 }

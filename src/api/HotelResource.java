@@ -8,6 +8,7 @@ import service.ReservationService;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class HotelResource {
@@ -36,9 +37,17 @@ public class HotelResource {
     public static Reservation bookARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
         return reservationService.reserveARoom(customer,room,checkInDate,checkOutDate);
     }
-    public Collection<Reservation> getCustomersReservations(String customerEmail){
-        return null;
+    public static Collection<Reservation> getCustomersReservations(String customerEmail){
+        Collection<Reservation> customerReservations = new HashSet<>();
+        for(Reservation reservation: reservationService.reservations){
+            if(reservation.getCustomer().getEmail().equals(customerEmail)){
+                customerReservations.add(reservation);
+            }
+        }
+        return customerReservations;
     }
+
+
     public static Collection<IRoom> findARoom(Date checkIn, Date checkOut){
         return reservationService.findRooms(checkIn,checkOut);
     }

@@ -52,5 +52,9 @@ public class Customer {
         return Objects.equals(email, customer.email);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email);
+    }
 }
 

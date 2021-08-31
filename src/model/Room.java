@@ -50,4 +50,8 @@ public class Room implements IRoom{
         return Objects.equals(roomNumber, room.roomNumber);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber, price, enumeration);
+    }
 }
