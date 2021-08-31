@@ -22,6 +22,12 @@ public class CustomerService {
 
     public void addCustomer(String email, String firstname, String lastName){
         Customer customer = new Customer(firstname,lastName,email);
+        for(Customer c : customers){
+            if(customer.equals(c)){
+                System.out.println("Error: The email is occupied, please use another one.");
+                return;
+            }
+        }
         customers.add(customer);
     }
     public Customer getCustomer(String customerEmail){

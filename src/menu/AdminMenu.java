@@ -5,6 +5,7 @@ import model.*;
 
 import javax.crypto.Cipher;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -60,18 +61,26 @@ public class AdminMenu {
     }
 
     public void addRoomMenu(){
-        Scanner addRoomScanner = new Scanner(System.in);
-        System.out.println("Please enter room Number: ");
-        String roomNumber = addRoomScanner.nextLine();
-        System.out.println("Please enter room price: ");
-        Double roomPrice = Double.parseDouble(addRoomScanner.nextLine());
-        System.out.println("Please tner type (SINGLE/DOUBLE): ");
-        RoomType roomType = RoomType.valueOf(addRoomScanner.nextLine());
+        boolean keepRunning = true;
+        while(keepRunning){
+            try {
+                Scanner addRoomScanner = new Scanner(System.in);
+                System.out.println("Please enter room Number: ");
+                String roomNumber = addRoomScanner.nextLine();
+                System.out.println("Please enter room price: ");
+                Double roomPrice = Double.parseDouble(addRoomScanner.nextLine());
+                System.out.println("Please enter type (SINGLE/DOUBLE): ");
+                RoomType roomType = RoomType.valueOf(addRoomScanner.nextLine());
 
-        List<IRoom> roomList = new ArrayList<>();
-        IRoom newRoom = new Room(roomNumber,roomPrice,roomType);
-        roomList.add(newRoom);
-        AdminResource.addRoom(roomList);
+                List<IRoom> roomList = new ArrayList<>();
+                IRoom newRoom = new Room(roomNumber,roomPrice,roomType);
+                roomList.add(newRoom);
+                AdminResource.addRoom(roomList);
+                keepRunning = false;
+            } catch (Exception e){
+                System.out.println("Invalid Room type (should be SINGLE/DOUBLE), please add a room again");
+            }
+        }
     }
 
 }

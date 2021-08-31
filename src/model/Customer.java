@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Customer {
@@ -42,4 +43,14 @@ public class Customer {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(email, customer.email);
+    }
+
 }
+

@@ -26,6 +26,12 @@ public class ReservationService {
 
 
     public void addRoom(IRoom room){
+        for(IRoom r : roomList){
+            if (r.equals(room)){
+                System.out.println("Error, the room " + room.getRoomNumber() + " exist, fault to add a room");
+                return;
+            }
+        }
         roomList.add(room);
     }
 
@@ -46,8 +52,20 @@ public class ReservationService {
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
         Collection<IRoom> availableRoom = new HashSet<>();
-
-        return null;
+        boolean roomAvailable;
+        for(IRoom room : roomList){
+            roomAvailable = true;
+            for (Reservation reservation : reservations){
+                if(reservation.getRoom().equals(room)){
+                    if (reservation.getCheckInDate().compareTo(checkInDate) * reservation.getCheckOutDate().compareTo(checkOutDate) < 0){
+                        roomAvailable = false;
+                    }
+                }
+            }
+            if (roomAvailable)
+                availableRoom.add(room);
+        }
+        return availableRoom;
     }
 
     public  Collection<Reservation> getCustomersReservation(Customer customer){
