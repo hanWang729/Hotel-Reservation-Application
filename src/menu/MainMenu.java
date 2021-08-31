@@ -120,8 +120,8 @@ public class MainMenu {
                 Date checkInDate = simpleDateFormat.parse(reserveRoomScanner.nextLine());
                 System.out.println("Enter CheckOut Date mm/dd/yyyy exmaple: 02/01/2020");
                 Date checkOutDate = simpleDateFormat.parse(reserveRoomScanner.nextLine());
-                if (checkInDate.compareTo(checkOutDate) > 0){
-                    System.out.println("Error, the check in date should not before the check out date");
+                if (checkInDate.compareTo(checkOutDate) >= 0){
+                    System.out.println("Error, the check in date should not before or the same with the check out date");
                 }
                 else {
                     Collection<IRoom> roomAvailable = HotelResource.findARoom(checkInDate,checkOutDate);
@@ -165,64 +165,68 @@ public class MainMenu {
             String ans = bookRoomScanner.nextLine();
             if (ans.equalsIgnoreCase("y")){
                 System.out.println("Do you have an account with us? {y/n}");
-                ans = bookRoomScanner.nextLine();
-                if (ans.equalsIgnoreCase("y")){
-                    boolean keepRunning2 = true;
-                    String email = "";
-                    while(keepRunning2){
-                        try {
-                            System.out.println("Please enter into your email");
-                            email = bookRoomScanner.nextLine();
-                            // check email
-                            String emailRegex = "^(.+)@(.+).(.+)$";
-                            Pattern pattern = Pattern.compile(emailRegex);
-                            if (!pattern.matcher(email).matches()){
-                                throw new IllegalArgumentException("Error, Invalid email");
+                while (keepRunning) {
+                    ans = bookRoomScanner.nextLine();
+                    if (ans.equalsIgnoreCase("y")) {
+                        boolean keepRunning2 = true;
+                        String email = "";
+                        while (keepRunning2) {
+                            try {
+                                System.out.println("Please enter into your email");
+                                email = bookRoomScanner.nextLine();
+                                // check email
+                                String emailRegex = "^(.+)@(.+).(.+)$";
+                                Pattern pattern = Pattern.compile(emailRegex);
+                                if (!pattern.matcher(email).matches()) {
+                                    throw new IllegalArgumentException("Error, Invalid email");
+                                } else {
+                                    keepRunning2 = false;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Invalid email format, please enter again");
                             }
-                            else {
-                                keepRunning2 = false;
-                            }
-                        } catch (Exception e){
-                            System.out.println("Invalid email format, please enter again");
                         }
-                    }
-                    Customer customer = HotelResource.getCustomer(email);
-                    if (customer == null){
-                        System.out.println("Your email is not registered, please create an account first");
-                        return;
-                    }
-                    else {
-                        boolean keepRunning3 = true;
-                        while (keepRunning3) {
-                            System.out.println("Please enter the room number you want to book: ");
-                            for (IRoom room : roomAvailable) {
-                                System.out.println("Here is the list of available room: \n");
-                                System.out.println(room);
-                            }
-                            String roomID = bookRoomScanner.nextLine();
-                            IRoom roomReserved = null;
-                            for (IRoom room : roomAvailable) {
-                                if (room.getRoomNumber().equals(roomID)) {
-                                    roomReserved = room;
+                        Customer customer = HotelResource.getCustomer(email);
+                        if (customer == null) {
+                            System.out.println("Your email is not registered, please create an account first");
+                            return;
+                        } else {
+                            boolean keepRunning3 = true;
+                            while (keepRunning3) {
+                                System.out.println("Please enter the room number you want to book: ");
+                                for (IRoom room : roomAvailable) {
+                                    System.out.println("Here is the list of available room: \n");
+                                    System.out.println(room);
+                                }
+                                String roomID = bookRoomScanner.nextLine();
+                                IRoom roomReserved = null;
+                                for (IRoom room : roomAvailable) {
+                                    if (room.getRoomNumber().equals(roomID)) {
+                                        roomReserved = room;
+                                    }
+                                }
+                                if (roomReserved == null) {
+                                    System.out.println("Please enter a room number list above");
+                                } else {
+                                    Reservation reservation = HotelResource.bookARoom(customer, roomReserved, checkInDate, checkOutDate);
+                                    return;
                                 }
                             }
-                            if (roomReserved == null) {
-                                System.out.println("Please enter a room number list above");
-                            } else {
-                                Reservation reservation = HotelResource.bookARoom(customer, roomReserved, checkInDate, checkOutDate);
-                                return;
-                            }
                         }
-                    }
 
-                }
-                else {
-                    System.out.println("You should create an account first");
-                    return;
+                    } else if (ans.equalsIgnoreCase("n")) {
+                        System.out.println("You should create an account first");
+                        return;
+                    } else {
+                        System.out.println("Do you have an account with us? Please enter (y/n)");
+                    }
                 }
             }
-            else {
+            else if (ans.equalsIgnoreCase("n")){
                 return;
+            }
+            else {
+                System.out.println("Would you like to book a room? Please enter (y/n)");
             }
         }
     }

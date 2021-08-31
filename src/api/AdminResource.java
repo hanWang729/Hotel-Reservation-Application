@@ -22,7 +22,7 @@ public class AdminResource {
     }
 
     public Customer getCustomer(String email){
-        return null;
+        return customerService.getCustomer(email);
     }
 
     public static void addRoom(List<IRoom> rooms){

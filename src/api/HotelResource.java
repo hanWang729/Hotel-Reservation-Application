@@ -31,20 +31,20 @@ public class HotelResource {
         customerService.addCustomer(email,firstName,lastName);
     }
     public IRoom getRoom(String rootNumber){
-        return null;
+        return reservationService.getARoom(rootNumber);
     }
 
     public static Reservation bookARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
         return reservationService.reserveARoom(customer,room,checkInDate,checkOutDate);
     }
     public static Collection<Reservation> getCustomersReservations(String customerEmail){
-        Collection<Reservation> customerReservations = new HashSet<>();
-        for(Reservation reservation: reservationService.reservations){
-            if(reservation.getCustomer().getEmail().equals(customerEmail)){
-                customerReservations.add(reservation);
+        Customer customerTarget = null;
+        for(Customer customer : customerService.customers){
+            if(customer.getEmail().equals(customerEmail)){
+                customerTarget = customer;
             }
         }
-        return customerReservations;
+        return reservationService.getCustomersReservation(customerTarget);
     }
 
 

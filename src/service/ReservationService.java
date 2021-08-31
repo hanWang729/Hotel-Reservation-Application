@@ -73,9 +73,11 @@ public class ReservationService {
 
     public  Collection<Reservation> getCustomersReservation(Customer customer){
         Collection<Reservation> customersReservation = new HashSet<>();
-        for (Reservation reservation: reservations){
-            if(reservation.getCustomer().equals(customer)){
-                customersReservation.add(reservation);
+        if(customer != null){
+            for (Reservation reservation: reservations){
+                if(reservation.getCustomer().equals(customer)){
+                    customersReservation.add(reservation);
+                }
             }
         }
         return customersReservation;
